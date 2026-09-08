@@ -32,9 +32,28 @@ function OperatorLayout() {
         <p className="mt-2 text-muted-foreground">
           Halaman ini khusus operator sekolah. Jika Anda wali murid, gunakan dashboard Anda.
         </p>
-        <Button asChild className="mt-6">
-          <Link to="/dashboard">Ke Dashboard Saya</Link>
-        </Button>
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <Button asChild>
+            <Link to="/dashboard">Ke Dashboard Saya</Link>
+          </Button>
+          <Button
+            variant="outline"
+            onClick={async () => {
+              const { data, error } = await supabase.rpc("claim_first_operator");
+              if (error || !data) {
+                toast.error("Operator sudah ditetapkan. Minta akses kepada operator sekolah.");
+                return;
+              }
+              toast.success("Anda kini menjadi operator sekolah.");
+              window.location.reload();
+            }}
+          >
+            Jadikan saya operator pertama
+          </Button>
+        </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Tombol di atas hanya berfungsi selama sekolah belum memiliki satu pun operator.
+        </p>
       </div>
     );
   }
