@@ -19,6 +19,8 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedKartuRouteImport } from './routes/_authenticated/kartu'
 import { Route as AuthenticatedOperatorRouteRouteImport } from './routes/_authenticated/operator/route'
 import { Route as AuthenticatedPendaftaranRouteImport } from './routes/_authenticated/pendaftaran'
+import { Route as AuthenticatedOperatorIndexRouteImport } from './routes/_authenticated/operator/index'
+import { Route as AuthenticatedOperatorSeleksiRouteImport } from './routes/_authenticated/operator/seleksi'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -71,6 +73,18 @@ const AuthenticatedPendaftaranRoute =
     path: '/pendaftaran',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedOperatorIndexRoute =
+  AuthenticatedOperatorIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedOperatorRouteRoute,
+  } as any)
+const AuthenticatedOperatorSeleksiRoute =
+  AuthenticatedOperatorSeleksiRouteImport.update({
+    id: '/seleksi',
+    path: '/seleksi',
+    getParentRoute: () => AuthenticatedOperatorRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -78,10 +92,12 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/jurusan': typeof JurusanRoute
   '/pengumuman': typeof PengumumanRoute
-  '/operator': typeof AuthenticatedOperatorRouteRoute
+  '/operator': typeof AuthenticatedOperatorRouteRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/kartu': typeof AuthenticatedKartuRoute
   '/pendaftaran': typeof AuthenticatedPendaftaranRoute
+  '/operator/seleksi': typeof AuthenticatedOperatorSeleksiRoute
+  '/operator/': typeof AuthenticatedOperatorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -89,10 +105,11 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/jurusan': typeof JurusanRoute
   '/pengumuman': typeof PengumumanRoute
-  '/operator': typeof AuthenticatedOperatorRouteRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/kartu': typeof AuthenticatedKartuRoute
   '/pendaftaran': typeof AuthenticatedPendaftaranRoute
+  '/operator/seleksi': typeof AuthenticatedOperatorSeleksiRoute
+  '/operator': typeof AuthenticatedOperatorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -102,10 +119,12 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/jurusan': typeof JurusanRoute
   '/pengumuman': typeof PengumumanRoute
-  '/_authenticated/operator': typeof AuthenticatedOperatorRouteRoute
+  '/_authenticated/operator': typeof AuthenticatedOperatorRouteRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/kartu': typeof AuthenticatedKartuRoute
   '/_authenticated/pendaftaran': typeof AuthenticatedPendaftaranRoute
+  '/_authenticated/operator/seleksi': typeof AuthenticatedOperatorSeleksiRoute
+  '/_authenticated/operator/': typeof AuthenticatedOperatorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,6 +138,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/kartu'
     | '/pendaftaran'
+    | '/operator/seleksi'
+    | '/operator/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -126,10 +147,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/jurusan'
     | '/pengumuman'
-    | '/operator'
     | '/dashboard'
     | '/kartu'
     | '/pendaftaran'
+    | '/operator/seleksi'
+    | '/operator'
   id:
     | '__root__'
     | '/'
@@ -142,6 +164,8 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/kartu'
     | '/_authenticated/pendaftaran'
+    | '/_authenticated/operator/seleksi'
+    | '/_authenticated/operator/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -225,18 +249,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPendaftaranRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/operator/': {
+      id: '/_authenticated/operator/'
+      path: '/'
+      fullPath: '/operator/'
+      preLoaderRoute: typeof AuthenticatedOperatorIndexRouteImport
+      parentRoute: typeof AuthenticatedOperatorRouteRoute
+    }
+    '/_authenticated/operator/seleksi': {
+      id: '/_authenticated/operator/seleksi'
+      path: '/seleksi'
+      fullPath: '/operator/seleksi'
+      preLoaderRoute: typeof AuthenticatedOperatorSeleksiRouteImport
+      parentRoute: typeof AuthenticatedOperatorRouteRoute
+    }
   }
 }
 
+interface AuthenticatedOperatorRouteRouteChildren {
+  AuthenticatedOperatorSeleksiRoute: typeof AuthenticatedOperatorSeleksiRoute
+  AuthenticatedOperatorIndexRoute: typeof AuthenticatedOperatorIndexRoute
+}
+
+const AuthenticatedOperatorRouteRouteChildren: AuthenticatedOperatorRouteRouteChildren =
+  {
+    AuthenticatedOperatorSeleksiRoute: AuthenticatedOperatorSeleksiRoute,
+    AuthenticatedOperatorIndexRoute: AuthenticatedOperatorIndexRoute,
+  }
+
+const AuthenticatedOperatorRouteRouteWithChildren =
+  AuthenticatedOperatorRouteRoute._addFileChildren(
+    AuthenticatedOperatorRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedOperatorRouteRoute: typeof AuthenticatedOperatorRouteRoute
+  AuthenticatedOperatorRouteRoute: typeof AuthenticatedOperatorRouteRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedKartuRoute: typeof AuthenticatedKartuRoute
   AuthenticatedPendaftaranRoute: typeof AuthenticatedPendaftaranRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedOperatorRouteRoute: AuthenticatedOperatorRouteRoute,
+  AuthenticatedOperatorRouteRoute: AuthenticatedOperatorRouteRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedKartuRoute: AuthenticatedKartuRoute,
   AuthenticatedPendaftaranRoute: AuthenticatedPendaftaranRoute,
