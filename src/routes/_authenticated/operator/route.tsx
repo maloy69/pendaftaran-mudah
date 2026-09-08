@@ -1,7 +1,10 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { ShieldAlert } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+
 
 export const Route = createFileRoute("/_authenticated/operator")({
   component: OperatorLayout,
