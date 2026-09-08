@@ -10,33 +10,122 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AlurRouteImport } from './routes/alur'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as JurusanRouteImport } from './routes/jurusan'
+import { Route as PengumumanRouteImport } from './routes/pengumuman'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedPendaftaranRouteImport } from './routes/_authenticated/pendaftaran'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AlurRoute = AlurRouteImport.update({
+  id: '/alur',
+  path: '/alur',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JurusanRoute = JurusanRouteImport.update({
+  id: '/jurusan',
+  path: '/jurusan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PengumumanRoute = PengumumanRouteImport.update({
+  id: '/pengumuman',
+  path: '/pengumuman',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPendaftaranRoute =
+  AuthenticatedPendaftaranRouteImport.update({
+    id: '/pendaftaran',
+    path: '/pendaftaran',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/alur': typeof AlurRoute
+  '/auth': typeof AuthRoute
+  '/jurusan': typeof JurusanRoute
+  '/pengumuman': typeof PengumumanRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/pendaftaran': typeof AuthenticatedPendaftaranRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/alur': typeof AlurRoute
+  '/auth': typeof AuthRoute
+  '/jurusan': typeof JurusanRoute
+  '/pengumuman': typeof PengumumanRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/pendaftaran': typeof AuthenticatedPendaftaranRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/alur': typeof AlurRoute
+  '/auth': typeof AuthRoute
+  '/jurusan': typeof JurusanRoute
+  '/pengumuman': typeof PengumumanRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/pendaftaran': typeof AuthenticatedPendaftaranRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/alur'
+    | '/auth'
+    | '/jurusan'
+    | '/pengumuman'
+    | '/dashboard'
+    | '/pendaftaran'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/alur'
+    | '/auth'
+    | '/jurusan'
+    | '/pengumuman'
+    | '/dashboard'
+    | '/pendaftaran'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/alur'
+    | '/auth'
+    | '/jurusan'
+    | '/pengumuman'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/pendaftaran'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AlurRoute: typeof AlurRoute
+  AuthRoute: typeof AuthRoute
+  JurusanRoute: typeof JurusanRoute
+  PengumumanRoute: typeof PengumumanRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +137,78 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/alur': {
+      id: '/alur'
+      path: '/alur'
+      fullPath: '/alur'
+      preLoaderRoute: typeof AlurRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jurusan': {
+      id: '/jurusan'
+      path: '/jurusan'
+      fullPath: '/jurusan'
+      preLoaderRoute: typeof JurusanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pengumuman': {
+      id: '/pengumuman'
+      path: '/pengumuman'
+      fullPath: '/pengumuman'
+      preLoaderRoute: typeof PengumumanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pendaftaran': {
+      id: '/_authenticated/pendaftaran'
+      path: '/pendaftaran'
+      fullPath: '/pendaftaran'
+      preLoaderRoute: typeof AuthenticatedPendaftaranRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPendaftaranRoute: typeof AuthenticatedPendaftaranRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPendaftaranRoute: AuthenticatedPendaftaranRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AlurRoute: AlurRoute,
+  AuthRoute: AuthRoute,
+  JurusanRoute: JurusanRoute,
+  PengumumanRoute: PengumumanRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

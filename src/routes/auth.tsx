@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { GraduationCap, Loader2, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
@@ -8,9 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    next: typeof search["next"] === "string" ? (search["next"] as string) : undefined,
-  }),
   head: () => ({
     meta: [
       { title: "Masuk Akun Wali Murid — SPMB Online" },
@@ -32,15 +29,15 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const search = useSearch({ from: "/auth" });
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     if (!loading && user) {
-      const next = search.next && search.next.startsWith("/") ? search.next : "/dashboard";
+      const raw = new URLSearchParams(window.location.search).get("next");
+      const next = raw && raw.startsWith("/") ? raw : "/dashboard";
       void navigate({ to: next, replace: true });
     }
-  }, [loading, user, navigate, search.next]);
+  }, [loading, user, navigate]);
 
   async function masuk() {
     setBusy(true);

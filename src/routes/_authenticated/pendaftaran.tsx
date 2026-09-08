@@ -56,8 +56,8 @@ function Field({
 }: {
   label: string;
   children: React.ReactNode;
-  error?: string;
-  hint?: string;
+  error?: string | undefined;
+  hint?: string | undefined;
 }) {
   return (
     <div className="space-y-1.5">
