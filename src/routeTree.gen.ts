@@ -16,6 +16,8 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as JurusanRouteImport } from './routes/jurusan'
 import { Route as PengumumanRouteImport } from './routes/pengumuman'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedKartuRouteImport } from './routes/_authenticated/kartu'
+import { Route as AuthenticatedOperatorRouteRouteImport } from './routes/_authenticated/operator/route'
 import { Route as AuthenticatedPendaftaranRouteImport } from './routes/_authenticated/pendaftaran'
 
 const IndexRoute = IndexRouteImport.update({
@@ -52,6 +54,17 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedKartuRoute = AuthenticatedKartuRouteImport.update({
+  id: '/kartu',
+  path: '/kartu',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOperatorRouteRoute =
+  AuthenticatedOperatorRouteRouteImport.update({
+    id: '/operator',
+    path: '/operator',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPendaftaranRoute =
   AuthenticatedPendaftaranRouteImport.update({
     id: '/pendaftaran',
@@ -65,7 +78,9 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/jurusan': typeof JurusanRoute
   '/pengumuman': typeof PengumumanRoute
+  '/operator': typeof AuthenticatedOperatorRouteRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/kartu': typeof AuthenticatedKartuRoute
   '/pendaftaran': typeof AuthenticatedPendaftaranRoute
 }
 export interface FileRoutesByTo {
@@ -74,7 +89,9 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/jurusan': typeof JurusanRoute
   '/pengumuman': typeof PengumumanRoute
+  '/operator': typeof AuthenticatedOperatorRouteRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/kartu': typeof AuthenticatedKartuRoute
   '/pendaftaran': typeof AuthenticatedPendaftaranRoute
 }
 export interface FileRoutesById {
@@ -85,7 +102,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/jurusan': typeof JurusanRoute
   '/pengumuman': typeof PengumumanRoute
+  '/_authenticated/operator': typeof AuthenticatedOperatorRouteRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/kartu': typeof AuthenticatedKartuRoute
   '/_authenticated/pendaftaran': typeof AuthenticatedPendaftaranRoute
 }
 export interface FileRouteTypes {
@@ -96,7 +115,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/jurusan'
     | '/pengumuman'
+    | '/operator'
     | '/dashboard'
+    | '/kartu'
     | '/pendaftaran'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -105,7 +126,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/jurusan'
     | '/pengumuman'
+    | '/operator'
     | '/dashboard'
+    | '/kartu'
     | '/pendaftaran'
   id:
     | '__root__'
@@ -115,7 +138,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/jurusan'
     | '/pengumuman'
+    | '/_authenticated/operator'
     | '/_authenticated/dashboard'
+    | '/_authenticated/kartu'
     | '/_authenticated/pendaftaran'
   fileRoutesById: FileRoutesById
 }
@@ -179,6 +204,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/kartu': {
+      id: '/_authenticated/kartu'
+      path: '/kartu'
+      fullPath: '/kartu'
+      preLoaderRoute: typeof AuthenticatedKartuRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/operator': {
+      id: '/_authenticated/operator'
+      path: '/operator'
+      fullPath: '/operator'
+      preLoaderRoute: typeof AuthenticatedOperatorRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pendaftaran': {
       id: '/_authenticated/pendaftaran'
       path: '/pendaftaran'
@@ -190,12 +229,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedOperatorRouteRoute: typeof AuthenticatedOperatorRouteRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedKartuRoute: typeof AuthenticatedKartuRoute
   AuthenticatedPendaftaranRoute: typeof AuthenticatedPendaftaranRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedOperatorRouteRoute: AuthenticatedOperatorRouteRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedKartuRoute: AuthenticatedKartuRoute,
   AuthenticatedPendaftaranRoute: AuthenticatedPendaftaranRoute,
 }
 

@@ -80,7 +80,7 @@ export function DocumentUploader({
   docType: string;
   label: string;
   required: boolean;
-  existing?: DocRow;
+  existing?: DocRow | undefined;
   locked: boolean;
   onChanged: () => void;
 }) {
